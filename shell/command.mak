@@ -29,18 +29,15 @@ LIBS = 	..$(DIRSEP)cmd$(DIRSEP)cmds.lib ..$(DIRSEP)lib$(DIRSEP)freecom.lib \
 ..$(DIRSEP)strings$(DIRSEP)strings.lib \
 $(SUPPL_LIB_PATH)$(DIRSEP)suppl_$(SHELL_MMODEL).lib $(LIBC)
 
-echoto.bat: ../scripts/echoto.bat
-	$(CP) ..$(DIRSEP)scripts$(DIRSEP)echoto.bat .
-
-command.rsp : echoto.bat
+command.rsp : $(ECHOTO)
 	$(RMFILES) command.rsp
-	$(ECHOTO0) command.rsp $(OBJ1)+
-	$(ECHOTO0) command.rsp $(OBJ2)+
-	$(ECHOTO0) command.rsp $(OBJ3)+
-	$(ECHOTO0) command.rsp $(OBJ4)
-	$(ECHOTO0) command.rsp command.exe
-	$(ECHOTO0) command.rsp command.map
-	$(ECHOTO0) command.rsp $(LIBS)
+	$(ECHOTO) command.rsp $(OBJ1)+
+	$(ECHOTO) command.rsp $(OBJ2)+
+	$(ECHOTO) command.rsp $(OBJ3)+
+	$(ECHOTO) command.rsp $(OBJ4)
+	$(ECHOTO) command.rsp command.exe
+	$(ECHOTO) command.rsp command.map
+	$(ECHOTO) command.rsp $(LIBS)
 
-command.exe : $(CFG) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) command.rsp
-	$(LD) @command.rsp
+command.exe : $(CFG) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) $(COMMAND_DEP)
+	$(COMMAND_LINK)

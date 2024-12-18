@@ -3,7 +3,6 @@ DIRSEP = /
 RMFILES = rm -f
 RMFILES2 = rm -f
 ECHOTO = echo >>
-ECHOTO0 = echo >>
 CP = cp
 NASMFLAGS := $(NASMFLAGS) -felf
 SHELL_MMODEL_COMP=cmodel=small
@@ -14,7 +13,8 @@ CC = ia16-elf-gcc -c
 CL = ia16-elf-gcc -mcmodel=small
 CLO = -o $@
 AR = ia16-elf-ar crsv
-LD = $(CL) $(CFLAGS1) -o command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) command.ld $(LIBS) -Wl,-Map,command.map \#
+LD = $(CL) $(CFLAGS1)
+COMMAND_LINK = $(LD) -o command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) command.ld $(LIBS) -Wl,-Map,command.map
 LIBLIST = >
 ECHOLIB = echo >>
 
