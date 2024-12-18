@@ -6,6 +6,8 @@ CC = $(BINPATH)\TCC		# Turbo C/C++
 CL = $(CC)
 AR = $(BINPATH)\Tlib /C
 LD = $(BINPATH)\Tlink /m/s/l /c/d
+COMMAND_DEP = command.rsp
+COMMAND_LINK = $(LD) @$(COMMAND_DEP)
 LIBLIST = ,
 ECHOLIB = echolib
 

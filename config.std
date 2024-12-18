@@ -2,7 +2,6 @@
 DIRSEP = \ #a backslash
 RMFILES = ..\scripts\rmfiles
 RMFILES2 = ..\..\scripts\rmfiles
-ECHOTO0 = echoto
 ECHOTO = $(TOP)\scripts\echoto
 CP = copy
 CLO =

@@ -8,6 +8,8 @@ CC = $(BINPATH)\BCC		# Borland C++
 CL = $(CC)
 AR = $(BINPATH)\Tlib /C
 LD = $(BINPATH)\Tlink /m/s/l /c/d /i
+COMMAND_DEP = command.rsp
+COMMAND_LINK = $(LD) @$(COMMAND_DEP)
 LIBLIST = ,
 ECHOLIB = echolib
 
