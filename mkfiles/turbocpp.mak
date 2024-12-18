@@ -7,7 +7,8 @@ INCLUDEPATH = -I$(CC_BASE_PATH)\INCLUDE
 CC = $(BINPATH)\TCC		# Turbo C/C++
 CL = $(CC)
 AR = $(BINPATH)\Tlib /C
-LD = $(BINPATH)\Tlink /m/s/l /c/d
+LD_DEPS = command.rsp
+LD = $(BINPATH)\Tlink /m/s/l /c/d @$(LD_DEPS)
 LIBLIST = ,
 ECHOLIB = echolib
 

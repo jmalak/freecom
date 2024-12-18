@@ -3,7 +3,6 @@ DIRSEP = /
 RMFILES = rm -f
 RMFILES2 = rm -f
 ECHOTO = echo >>
-ECHOTO0 = echo >>
 CP = cp
 !endif
 
@@ -16,18 +15,21 @@ CP = cp
 CC_BASE_PATH = $(WATCOM)
 !ifdef __LINUX__
 BINPATH = $(CC_BASE_PATH)/binl
-LD = $(CL) -l=dos -fe=command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) -\"op map,statics,verbose,stack=4k\" $#
+#LD = $(CL) -l=dos -fe=command.exe $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) -\"op map,statics,verbose,stack=4k\" $#
+LD = $(BINPATH)$(DIRSEP)wlink sys DOS op q,map,statics,verbose N command.exe F {$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4)} L {$(LIBS)}
 !else
 !ifdef Win64
 BINPATH = $(CC_BASE_PATH)\BINNT
 !else
 BINPATH = $(CC_BASE_PATH)\BINW
 !endif
-LD = wlinker /ma/nologo
+#LD = *$(BINPATH)$(DIRSEP)wlink sys DOS op q,map,statics,verbose N command.exe F {$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4)} L {$(LIBS)}
+LD_DEPS = command.rsp
+LD = wlinker /ma/nologo @$(LD_DEPS)
 !endif
 LIBPATH = $(CC_BASE_PATH)$(DIRSEP)lib
 INCLUDEPATH = -I$(CC_BASE_PATH)$(DIRSEP)h
-CC = $(BINPATH)$(DIRSEP)wcc -zq -fo=.obj
+CC = $(BINPATH)$(DIRSEP)wcc -zq -fo=.obj -bt=dos
 CL = $(BINPATH)$(DIRSEP)wcl -zq -fo=.obj -bcl=dos
 AR = $(BINPATH)$(DIRSEP)wlib -n -c
 LIBLIST = >
@@ -50,4 +52,4 @@ CFLAGS1 = -os-s-wx
   $(BINPATH)\wlink sys DOS f $< lib $(SUPPL_LIB_PATH)\SUPPL_$(SHELL_MMODEL).LIB op q
 !endif
 .c.obj:
-  $(CC) $< -bt=dos @$(CFG)
+  $(CC) $< @$(CFG)

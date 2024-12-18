@@ -14,7 +14,8 @@ INCLUDEPATH = $(CC_BASE_PATH)\INCLUDE;$(SUPPL_INC_PATH)
 ## Que programas usar
 CC = $(BINPATH)\TCC +$(CFG)
 AR = $(BINPATH)\Tlib
-LD = $(BINPATH)\Tlink
+LD_DEPS = command.rsp
+LD = $(BINPATH)\Tlink @$(LD_DEPS)
 NASM = nasm.exe
 
 ## Adicione -DDEBUG=1 a seguir para ativar o suporte a depuração para arquivos assembly
