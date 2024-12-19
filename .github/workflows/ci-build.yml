@@ -8,6 +8,7 @@ on:
       - reopened
       - synchronize
   push:
+  repository_dispatch:
 
 jobs:
   build:
