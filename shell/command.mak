@@ -29,10 +29,16 @@ LIBS = 	..$(DIRSEP)cmd$(DIRSEP)cmds.lib ..$(DIRSEP)lib$(DIRSEP)freecom.lib \
 ..$(DIRSEP)strings$(DIRSEP)strings.lib \
 $(SUPPL_LIB_PATH)$(DIRSEP)suppl_$(SHELL_MMODEL).lib $(LIBC)
 
-echoto.bat: ../scripts/echoto.bat
-	$(CP) ..$(DIRSEP)scripts$(DIRSEP)echoto.bat .
+ECHOTO0 = ..$(DIRSEP)scripts$(DIRSEP)echoto.bat
 
-command.rsp : echoto.bat
+command.rsp : $(ECHOTO0)
+!if "$(COMPILER)" == "WATCOM"
+	$(RMFILES) $@
+	%append $@ name command.exe
+	%append $@ opt map
+	for %f in ($(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4)) do %append $@ file %f
+	for %f in ($(LIBS)) do %append $@ lib %f
+!else
 	$(RMFILES) command.rsp
 	$(ECHOTO0) command.rsp $(OBJ1)+
 	$(ECHOTO0) command.rsp $(OBJ2)+
@@ -41,6 +47,7 @@ command.rsp : echoto.bat
 	$(ECHOTO0) command.rsp command.exe
 	$(ECHOTO0) command.rsp command.map
 	$(ECHOTO0) command.rsp $(LIBS)
+!endif
 
-command.exe : $(CFG) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) command.rsp
-	$(LD) @command.rsp
+command.exe : $(CFG) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(LIBS) $(LD_DEPS)
+	$(LD)
