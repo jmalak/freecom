@@ -1,0 +1,35 @@
+name: load-open-watcom
+description: Load Open Watcom
+#
+# https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
+# https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-amd64_linux.tar.xz
+#
+runs:
+  using: composite
+  steps:
+    - name: Load UPX
+      run: |
+        mkdir -p upx
+        if [[ "${{runner.os}}" = "Windows" ]]; then
+          curl -LsS -o upx-4.2.4-win64.zip https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
+          7z x upx-4.2.4-win64.zip
+          rm -f upx-4.2.4-win64.zip
+          mv upx-4.2.4-win64 upx
+        else
+          curl -LsS -o upx-4.2.4-amd64_linux.tar.xz https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-amd64_linux.tar.xz
+          7z x upx-4.2.4-amd64_linux.tar.xz
+          7z x upx-4.2.4-amd64_linux.tar
+          rm -f upx-4.2.4-amd64_linux.tar.xz upx-4.2.4-amd64_linux.tar
+          mv upx-4.2.4-amd64_linux upx
+        fi
+        echo "content of upx"
+        ls -l upx
+      shell: bash
+    - name: Setup UPX PATH
+      run: |
+        if [[ "${{runner.os}}" = "Windows" ]]; then
+          echo "${{github.workspace}}\\upx">> "$GITHUB_PATH"
+        else
+          echo "${{github.workspace}}/upx">> "$GITHUB_PATH"
+        fi
+      shell: bash
