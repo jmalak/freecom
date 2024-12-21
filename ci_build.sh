@@ -9,10 +9,18 @@ else
 fi
 echo CI_BUILD_DIR is \"${CI_BUILD_DIR}\"
 
+# Watcom
 OWTAR=ow-snapshot.tar.xz
-
-export PATH=$CI_BUILD_DIR/bin:$PATH:$CI_BUILD_DIR/_watcom/binl64
+if [ ! -d _watcom ] ; then
+  mkdir -p _downloads
+  mkdir _watcom
+  if [ ! -f _downloads/$OWTAR ] ; then
+    (cd _downloads && wget --no-verbose https://github.com/open-watcom/open-watcom-v2/releases/download/Last-CI-build/$OWTAR)
+  fi
+  (cd _watcom && tar -xf ../_downloads/$OWTAR)
+fi
 export WATCOM=$CI_BUILD_DIR/_watcom
+export PATH=$CI_BUILD_DIR/bin:$PATH:$CI_BUILD_DIR/_watcom/binl64
 
 # Output directory
 rm -rf _output
@@ -25,7 +33,7 @@ LANGUAGES="english dutch finnish french german italian polish pt pt_br russian s
 for lng in ${LANGUAGES} ; do
   # Do full clean for rebuild of each language
   echo "Do full clean"
-  git clean -q -x -d -f -e _output -e _watcom -e $OWTAR
+  git clean -q -x -d -f -e _output -e _watcom -e _download
   export LNG=${lng}
   ./build.sh gcc
   TGT="_output/gcc/${LNG}"
@@ -37,7 +45,7 @@ done
 for lng in ${LANGUAGES} ; do
   # Do full clean for rebuild of each language
   echo "Do full clean"
-  git clean -q -x -d -f -e _output -e _watcom -e $OWTAR
+  git clean -q -x -d -f -e _output -e _watcom -e _download
   export LNG=${lng}
   ./build.sh wc
   TGT="_output/wc/${LNG}"
@@ -53,7 +61,7 @@ cp -v _output/gcc/english/command.com ${HOME}/.dosemu/drive_c/[Cc][Oo][Mm][Mm][A
 
 # Watcom (DOS) (slow so just English)
 mkdir -p _output/wc_dos/english
-git clean -q -x -d -f -e _output -e _watcom -e $OWTAR
+git clean -q -x -d -f -e _output -e _watcom -e _download
 {
   echo set COMPILER=WATCOM
   echo set WATCOM='C:\\devel\\watcomc'

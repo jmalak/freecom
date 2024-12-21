@@ -13,18 +13,6 @@ sudo apt install dosemu2 dos2unix
 # GCC-IA16 for Linux
 sudo apt install gcc-ia16-elf libi86-ia16-elf
 
-# Watcom for Linux
-OWTAR=ow-snapshot.tar.xz
-if [ ! -d _watcom ] ; then
-  if [ ! -f $OWTAR ] ; then
-    echo "Downloading OpenWatcom compiler"
-    wget --no-verbose https://github.com/open-watcom/open-watcom-v2/releases/download/2023-02-01-Build/$OWTAR
-  fi
-  echo "Extracting OpenWatcom compiler"
-  mkdir _watcom
-  tar -C _watcom -xf $OWTAR
-fi
-
 # Common tools for DOS builds
 mkdir -p _downloads
 cd _downloads
