@@ -1,3 +1,4 @@
+#define IGNORE_ENHANCED_INPUT 
 /*
  * config.h - Used to configure what will be compiled into the shell.
  *

@@ -31,6 +31,7 @@ export COMPILER=watcom
 if [ -z "$WATCOM" ]; then
   export WATCOM=$HOME/watcom
   export PATH=$PATH:$WATCOM/binl
+  export INCLUDE=$INCLUDE:$WATCOM/lh
 fi
 export PATH=$PATH:.
 
@@ -42,39 +43,39 @@ export XMS_SWAP=1
 while (( "$#" )); do
   case "$1" in
     -h)
-	echo Build FreeCOM
-	echo Usage: %0 [-r] [clean] [no-xms-swap] [debug] [language]
-	echo -r: Rebuild -- Clean before proceed
-	echo clean: Remove *.OBJ, *.COM, *.LIB, etc. files, then exit
-	echo no-xms-swap: Build FreeCOM without XMS-Only Swap support
-	echo debug: Build FreeCOM with debug settings.
-	echo You can select for which language to built FreeCOM by setting
-	echo the environment variable LNG before running this script, e.g.:
-	echo EXPORT LNG=german
-	echo selects the German language. For available language see STRINGS\*.LNG
-	exit 0
-	;;
+        echo Build FreeCOM
+        echo Usage: %0 [-r] [clean] [no-xms-swap] [debug] [language]
+        echo -r: Rebuild -- Clean before proceed
+        echo clean: Remove *.OBJ, *.COM, *.LIB, etc. files, then exit
+        echo no-xms-swap: Build FreeCOM without XMS-Only Swap support
+        echo debug: Build FreeCOM with debug settings.
+        echo You can select for which language to built FreeCOM by setting
+        echo the environment variable LNG before running this script, e.g.:
+        echo EXPORT LNG=german
+        echo selects the German language. For available language see STRINGS\*.LNG
+        exit 0
+        ;;
     no-xms-swap)
-	unset XMS_SWAP
-	;;
+        unset XMS_SWAP
+        ;;
     debug)
-	export DEBUG=1
-	;;
+        export DEBUG=1
+        ;;
     watcom)
-	export COMPILER=watcom
-	;;
+        export COMPILER=watcom
+        ;;
     wc)
-	export COMPILER=watcom
-	;;
+        export COMPILER=watcom
+        ;;
     gcc)
-	export COMPILER=gcc
-	;;
+        export COMPILER=gcc
+        ;;
     upx)
-	WITH_UPX="yes"
-	;;
+        WITH_UPX="yes"
+        ;;
     *)
-	break
-	;;
+        break
+        ;;
   esac
   shift
 done
@@ -86,14 +87,14 @@ echo Building FreeCOM for language $LNG
 
 if [ -z "$MAKE" ]; then
     case "$COMPILER" in
-	watcom)
-	    export MAKE="wmake -ms -h -f"
-	    ;;
-	gcc)
-	    export MAKE="make -f gnumake.mak"
-	    ;;
-	*)
-	    ;;
+        watcom)
+            export MAKE="wmake -ms -h -f"
+            ;;
+        gcc)
+            export MAKE="make -f gnumake.mak"
+            ;;
+        *)
+            ;;
     esac
     echo Make is $MAKE.
 fi
@@ -102,19 +103,19 @@ fi
 
 gnumake_subst () {
     $SED -e 's@^!@@' \
-	-e 's@^include "\(.*\)"@include \1@' \
-	-e 's@^include $(TOP)/config.mak@include $(TOP)/gnuconf.mak@' \
-	-e 's@if \(.*\) == \(.*\)[\r$]@ifeq (\1,\2)@' \
-	-e 's@^CC =@CC :=@' \
-	-e 's@^INCLUDEPATH =@INCLUDEPATH :=@' \
-	-e 's/\(-f obj.*$<\)/\1 -o $@/' \
-	 < $1/$2 > $1/$3
+        -e 's@^include "\(.*\)"@include \1@' \
+        -e 's@^include $(TOP)/config.mak@include $(TOP)/gnuconf.mak@' \
+        -e 's@if \(.*\) == \(.*\)[\r$]@ifeq (\1,\2)@' \
+        -e 's@^CC =@CC :=@' \
+        -e 's@^INCLUDEPATH =@INCLUDEPATH :=@' \
+        -e 's/\(-f obj.*$<\)/\1 -o $@/' \
+         < $1/$2 > $1/$3
 }
 
 if $MAKE -? 2>&1 | grep -q gnu; then
     gnumake_subst . config.mak gnuconf.mak
     for i in suppl utils strings criter lib cmd; do
-	gnumake_subst $i $i.mak gnumake.mak
+        gnumake_subst $i $i.mak gnumake.mak
     done
     gnumake_subst suppl/src suppl.mak gnumake.mak
     gnumake_subst strings/strings strings.mak gnumake.mak
