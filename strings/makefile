@@ -96,6 +96,6 @@ clobber : clean
 	$(RM) $(RMFLAGS) *.exe *.com ..\strings.h ..\strings.dat ..\string.err
 
 clean : strings_lib_clean
-	$(RM) $(RMFLAGS) *.lst *.map *.bin *.bak *.las *.obj $(CFG) strings.h strings.dat
+	$(RM) $(RMFLAGS) *.lst *.map *.bin *.bak *.las *.obj *.o $(CFG) strings.h strings.dat
 	$(RM) $(RMFLAGS) *.log strings.err strings.lib strings.lst
 

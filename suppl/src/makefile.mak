@@ -7,7 +7,7 @@ TOP = ../..
 SUPPL=suppl_$(SHELL_MMODEL)
 CC = $(CC) -I..
 
-all : ../$(SUPPL).lib
+all : $(CFG) $(SUPPL).lib
 
 OBJS1 = addu.obj byte2par.obj cntry.obj dfndeli2.obj dfndelim.obj dfnexpan.obj dfnfnam.obj
 OBJS2 = dfnfullp.obj dfnmerge.obj dfnpath.obj dfnsplit.obj dfnsquee.obj dfnstat.obj
@@ -58,8 +58,10 @@ suppllib.rsp: $(ECHOLIBDEP) makefile.mak
 	$(ECHOLIB) suppllib.rsp $(DOBJS10)
 
 # Create the library
-../$(SUPPL).lib: $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4) $(OBJS5) $(OBJS6) $(OBJS7) \
-$(OBJS8) $(OBJS9) $(OBJS10) $(OBJS11) $(DOBJS1) $(DOBJS2) $(DOBJS3) $(DOBJS4) \
+$(SUPPL).lib: $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4) $(OBJS5) $(OBJS6) \
+$(OBJS7) $(OBJS8) $(OBJS9) $(OBJS10) $(OBJS11) $(DOBJS1) $(DOBJS2) $(DOBJS3) $(DOBJS4) \
 $(DOBJS5) $(DOBJS6) $(DOBJS7) $(DOBJS8) $(DOBJS9) $(DOBJS10) suppllib.rsp
-	$(RMFILES) ..$(DIRSEP)$(SUPPL).lib
-	$(AR) ..$(DIRSEP)$(SUPPL).lib @suppllib.rsp $(LIBLIST) ..$(DIRSEP)$(SUPPL).lst
+	$(RMFILES) $(SUPPL).lib
+	$(AR) $(SUPPL).lib @suppllib.rsp $(LIBLIST) $(SUPPL).lst
+	$(CP) $(SUPPL).lib ..
+	$(CP) $(SUPPL).lst ..

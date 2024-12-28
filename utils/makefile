@@ -79,5 +79,5 @@ clobber : clean
 	$(RM) $(RMFLAGS) *.exe *.com *.cfg
 
 clean :
-	$(RM) $(RMFLAGS) *.lst *.map *.bin *.bak *.las *.obj $(CFG) *.dmp
+	$(RM) $(RMFLAGS) *.lst *.map *.bin *.bak *.las *.obj *.o $(CFG) *.dmp
 
